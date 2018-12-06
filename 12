@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stdlib.h
+#include<stdlib.h>
 #define m 10
 int HT[m];
 int hash(int key)
@@ -30,8 +30,9 @@ printf("HASH Table is Full!!!\n");
 void main()
 {
 FILE *fp;
+int n,i,key,hk;
 char name[100];
-for (i=0;i<m;i++)
+for(i=0;i<m;i++)
 HT[i]=-1;
 fp=fopen("emp.txt","r");
 while(!feof(fp))
