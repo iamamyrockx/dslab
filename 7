@@ -8,7 +8,7 @@ char name[30];
 char branch[5];
 int sem;
 char phno[10];
-struct student *next; //Self referential pointer.
+struct student *next;
 };
 typedef struct student NODE;
 int countnodes(NODE *head)
@@ -26,7 +26,7 @@ return count;
 NODE* getnode(NODE *head)
 {
 NODE *newnode;
-newnode=(NODE*)malloc(sizeof(NODE)); //Create first NODE
+newnode=(NODE*)malloc(sizeof(NODE)); 
 printf("\nEnter USN, Name, Branch, Sem, Ph.No\n");
 fflush(0);
 printf("ENTER STUDENT USN:\n");
@@ -39,7 +39,7 @@ printf("ENTER STUDENT SEM:\n");
 scanf("%d",&newnode->sem);
 printf("ENTER STUDENT Pho No:\n");
 scanf("%d",&newnode->phno);
-newnode->next=NULL; //Set next to NULL...
+newnode->next=NULL; 
 head=newnode;
 return head;
 }
@@ -157,7 +157,7 @@ NODE *p, *q;
 p=head;
 while(p->next!=NULL)
 {
-p=p->next; //Go upto -1 NODE which you want to delete
+p=p->next; 
 }
 q=p->next;
 free(q);//Delete last NODE...
@@ -243,19 +243,19 @@ switch(ch)
 case 1: printf("\nHow many student data you want to create: ");
 scanf("%d", &n);
 for(i=0;i<n;i++)
-head=create(head);//Call to Create NODE...
+head=create(head);
 break;
-case 2: head=display(head); //Call to Display...
+case 2: head=display(head); 
 break;
-case 3: head=insert(head); //Call to Insert...
+case 3: head=insert(head); 
 break;
-case 4: head=del(head); //Call to delete
+case 4: head=del(head); 
 break;
 case 5: head=stack(head);
 break;
 case 6: head=queue(head);
 break;
-case 7: exit(0); //Exit...
+case 7: exit(0);
 }
 }while(ch!=7);
 }
