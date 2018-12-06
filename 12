@@ -1,0 +1,54 @@
+#define m 10
+int HT[m];
+int hash(int key)
+{
+return key%m;
+}
+void linear_probe(int hk,int key)
+{
+int i,flag=0;
+for (i=hk+1;i<m;i++)
+{
+if (HT[i]==-1)
+{
+HT[i]=key;
+return;
+}
+}
+for(i=0;i<hk;i++)
+{
+if (HT[i]==-1)
+{
+HT[i]=key;
+return;
+}
+}
+printf("HASH Table is Full!!!\n");
+}
+void main()
+{
+FILE *fp;
+char name[100];
+for (i=0;i<m;i++)
+HT[i]=-1;
+fp=fopen("emp.txt","r");
+while(!feof(fp))
+{
+fscanf(fp,"%d%s",&key,name);
+hk=hash(key);
+if (HT[hk]==-1)
+HT[hk]=key;
+else
+{
+printf("Collision for key %d:\n",key);
+printf("Collision solved by Linear Probing\n\n");
+linear_probe(hk,key);
+}
+}
+printf("-------------------------------\n");
+printf("HASH TABLE\n");
+printf("-------------------------------\n");
+printf("Address\tKeys\n");
+for (i=0;i<m;i++)
+printf("%02d\t%d\n",i,HT[i]);
+}
