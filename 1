@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include <stdlib.h>
+int a[50],n,pos,element;
+						//Create an Array with n number of Elements
+void createarray()
+{
+    int i;
+    printf("Enter the NO OF ELEMENTS IN an array:");
+    scanf("%d",&n);
+    printf("enter array elements:\n");
+    for(i=0;i<n;i++)
+    	scanf("%d",&a[i]);
+}
+						
+void displayarray()
+{
+    int i;
+    printf("The Array Elements are:\n");
+    for(i=0;i<n;i++)
+    	printf("%d\t",a[i]);
+}
+					
+void insertelement()
+{
+    int i;
+    printf("Enter the Element and Position(0-n-1) to be Inserted\n");
+    scanf("%d%d",&element,&pos);
+    if (pos<0  || pos>n-1)
+        	printf("Invalid Position\n");
+    else
+    {
+   				
+    	for(i=n-1;i>=pos;i--)
+        	a[i+1]=a[i];
+    	a[pos]=element;
+    	n++;
+    }      			     
+}
+				//Delete an Element at the given Position
+void deleteelement()
+{
+    int i;
+    printf("Enter the Position(0-n-1) of the Element to be Deleted\n");
+    scanf("%d",&pos);
+    if (pos<0 || pos>n-1)
+        	printf("Invalid Position\n");
+    else
+    {
+   	 printf("The Deleted Element is %d\n",a[pos]);
+    						//Delete by pushing up other elements
+    	for(i=pos;i<n;i++)
+        		a[i]=a[i+1];
+    	n--;
+    }      				    
+}
+
+void main()
+{
+    int ch;
+    createarray();
+    while(1)
+    {
+        printf("\n1. Display Array Elements\n2. Insert an Element\n3. Delete an Element\n4. 		Exit\n");
+        printf("Enter Choice:\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1: displayarray();
+                    break;
+            case 2: insertelement();
+                    break;
+            case 3: deleteelement();
+                    break;
+            case 4: exit(0);
+            default: printf("Invalid Choice\n");
+        }
+    }
+}
