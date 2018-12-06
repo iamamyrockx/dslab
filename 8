@@ -1,186 +1,203 @@
 #include<stdio.h>
-#include<string.h>
 #include<stdlib.h>
-struct emp
+struct node
 {
-char SSN[12];
-char name[25];
-char dept[25];
-char designation[25];
-float salary;
-char phone_no[10];
-struct node *llink;
-struct node *rlink;
-};
-typedef struct emp EMP;
-EMP *read_data()
+	struct node *prev;
+	char ssn[20], name[20], dept[20], desg[20];
+	int sal;
+	long mob;
+	struct node *next;
+}*first=NULL;
+
+struct node *create()
 {
-char SSN[12],name[25],dept[25],designation[25];
-char phone_no[10];
-float salary;
-EMP *temp;
-temp=(EMP *)malloc(sizeof(EMP));
-printf("Enter the Employees Details:\n");
-printf("Enter SSN\n");
-scanf("%s",temp->SSN);
-printf("Enter Name\n");
-scanf("%s",temp->name);
-printf("Enter Department\n");
-scanf("%s",temp->dept);
-printf("Enter Designation\n");
-scanf("%s",temp->designation);
-printf("Enter Salary\n");
-scanf("%f",&temp->salary);
-printf("Enter Phone Number\n");
-scanf("%s",temp->phone_no);
-temp->rlink=temp->llink=NULL;
-return temp;
+	struct node *new;
+	new=(struct node *) malloc(sizeof(struct node));
+
+	if(new==NULL)
+	{
+		printf("Memory couldn't be allocated!\n");
+		return NULL;
+	}
+	printf("Name : ");
+	scanf("%s", new->name);
+	printf("SSN : ");
+	scanf("%s", new->ssn);
+	printf("Dept : ");
+	scanf("%s", new->dept);
+	printf("Desg : ");
+	scanf("%s", new->desg);
+	printf("Salary : ");
+	scanf("%d", &new->sal);
+	printf("Phone : ");
+	scanf("%ld", &new->mob);
+	new->prev=NULL;
+	new->next=NULL;
+
+	return new;
 }
-EMP *insert_front(EMP *head)
+void insertEnd(struct node *new)
 {
-EMP *temp,*next;
-temp=read_data();
-next=head->rlink;
-head->rlink=temp;
-temp->llink=head;
-next->llink=temp;
-temp->rlink=next;
-return head;
+	struct node *temp;
+	temp=first;
+	if(temp==NULL)
+	{
+		first=new;
+		return;
+	}
+	while(temp->next!=NULL)
+		temp=temp->next;
+	temp->next=new;
+	new->prev=temp;
 }
-EMP *delete_end(EMP *head)
+void createList()
 {
-EMP *cur,*prev;
-if(head->rlink==NULL)
-printf("List is empty\n");
-else
+	struct node *new;
+	int n, i;
+	printf("Enter the number of employees : ");
+	scanf("%d", &n);
+	for(i=1; i<=n; i++)
+	{
+		printf("Enter the details of employee %d\n", i);
+		new=create();
+		insertEnd(new);
+	}
+}
+void deleteEnd()
 {
-cur=head->rlink;
-if (cur->rlink==NULL)
-head->rlink=NULL;
-else
+	struct node *temp;
+	temp=first;
+	if(temp==NULL)
+	{
+		printf("List is Empty!\n");
+		return;
+	}
+	if(temp->next==NULL)
+	{
+		printf("The deleted employee's SSN is : %s\n", temp->ssn);
+		first=NULL;
+		free(temp);
+		return;
+	}
+	else
+	{
+		while(temp->next!=NULL)
+			temp=temp->next;
+		printf("The deleted employee's SSN is : %s\n", temp->ssn);
+		temp->prev->next=NULL;
+		free(temp);
+
+	}
+}
+void insertFront(struct node *new)
 {
-while(cur->rlink!=NULL)
+	struct node *temp;
+	temp=first;
+	if(temp==NULL)
+	{
+		first=new;
+		return;
+	}
+
+	new->next=first;
+	first->prev=new;
+	first=new;
+}
+void deleteFront()
 {
-prev=cur;
-cur=cur->rlink;
+	struct node *temp;
+	temp=first;
+	if(temp==NULL)
+	{
+		printf("List is Empty!\n");
+		return;
+	}
+	if(temp->next==NULL)
+	{
+		printf("The deleted employee's SSN is : %s\n", temp->ssn);
+		first=NULL;
+		free(temp);
+	}
+	else
+	{
+		printf("The deleted employee's SSN is : %s\n", temp->ssn);
+		first=temp->next;
+		first->prev=NULL;
+		free(temp);
+	}
 }
-prev->rlink=NULL;
-}
-free(cur);
-}
-return head;
-}
-EMP *delete_front(EMP *head)
+void display()
 {
-EMP *cur,*next;
-if(head->rlink==NULL)
-printf("List is empty\n");
-else
+	struct node *temp;
+	temp=first;
+	if(temp==NULL)
+	{
+		printf("List is empty!\n");
+		return;
+	}
+	int count=0;
+	while(temp!=NULL)
+	{
+		printf("Name        : %s\n", temp->name);
+		printf("SSN         : %s\n", temp->ssn);
+		printf("Department  : %s\n", temp->dept);
+		printf("Designation : %s\n", temp->desg);
+		printf("Salary      : %d\n", temp->sal);
+		printf("Phone No.   : %ld\n", temp->mob);
+		count++;
+		temp=temp->next;
+	}
+	printf("The total no. of employees are : %d\n", count);
+}
+int main()
 {
-cur=head->rlink;
-if (cur->rlink==NULL)
-head->rlink=NULL;
-else
-{
-next=cur->rlink;
-next->llink=head;
-head->rlink=next;
+	int ch;
+	struct node *new;
+	while(1)
+	{
+		printf("Doubly Linked List Operations\n");
+		printf("1.Create\n2.Display\n3.Insert End\n4.Delete End\n5.Insert Front\n6.Delete Front\n7.Exit\n\n");
+		printf("Enter your choice : ");
+		scanf("%d", &ch);
+		switch(ch)
+		{
+			case 1 : createList();
+					 break;
+			case 2 : display();
+					 break;
+			case 3 : new=create();
+					 insertEnd(new);
+					 break;
+			case 4 : deleteEnd();
+					 break;
+			case 5 : new=create();
+					 insertFront(new);
+					 break;
+			case 6 : deleteFront();
+					 break;
+			case 7 : return 0;
+		}
+	}
 }
-free(cur);
-}
-return head;
-}
-EMP *insert_end(EMP *head)
-{
-EMP *cur,*temp;
-temp=read_data();
-cur=head;
-while(cur->rlink!=NULL)
-cur=cur->rlink;
-cur->rlink=temp;
-temp->llink=cur;
-return head;
-}
-EMP *deq(EMP *head)
-{
-int ch;
-while(1)
-{
-printf("1.Insert front\n2.Insert End\n3.Delete Front\n4.Delete
-End\n5.Display\n6.Exit\n");
-scanf("%d",&ch);
-switch(ch)
-{
-case 1: head=insert_front(head);
-break;
-case 2: head=insert_end(head);
-break;
-case 3: head=delete_front(head);
-break;
-case 4: head=delete_end(head);
-break;
-case 5: display(head);
-break;
-case 6: return;
-}
-}
-}
-void display(EMP *head)
-{
-EMP *cur;
-int count=0;
-if(head->rlink==NULL)
-printf("List is empty\n");
-else
-{
-cur=head->rlink;
-printf("SSN\tName\tDept\tDesignation\tSalary\tPhone_No.\n");
-while(cur!=NULL)
-{
-printf("%s\t%s\t%s\t%s\t%f\t%s\n",cur->SSN,cur->name,cur->dept,cur-
->designation,cur->salary,cur->phone_no);
-cur=cur->rlink;
-count++;
-}
-printf("Number of nodes in DLL=%d\n",count);
-}
-}
-void main()
-{
-int ch,n,i;
-EMP *head;
-head=(EMP *)malloc(sizeof(EMP));
-head->rlink=head->llink=NULL;
-printf("Creation of DLL\n");
-printf("Enter the number of employees\n");
-scanf("%d",&n);
-for (i=1;i<=n;i++)
-head=insert_end(head);
-while (1)
-{
-printf("1.Display\n2.Insert End\n3:Delete End\n4.Insert Front\n5.Delete
-Front\n6.Double Ended Queue\n7.Exit\n");
-printf("Enter the choice\n");
-scanf("%d",&ch);
-switch(ch)
-{
-case 1: display(head);
-break;
-case 2: head=insert_end(head);
-printf("Node Inserted at the End\n");
-break;
-case 3: head=delete_end(head);
-printf("Node deleted at the End\n");
-break;
-case 4: head=insert_front(head);
-printf("Node Inserted at Front\n");
-break;
-case 5: head=delete_front(head);
-printf("Node deleted at Front\n");
-break;
-case 6: head=deq(head);
-break;
-case 7: exit(0);
-}
-}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
